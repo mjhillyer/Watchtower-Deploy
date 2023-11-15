@@ -1,0 +1,99 @@
+version: '3'
+networks:
+  q_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: "172.32.0.0/24"
+
+services:
+  app:
+    build:
+      context: ../../images/watchtower-f
+      dockerfile: Dockerfile
+      args:
+        - VERSION=${VERSION}
+        - GIT_URL=${GIT_URL}
+        - BUILD_FILE_BRANDING=${BUILD_FILE_BRANDING-}
+        - DB_ENGINE=${DB_ENGINE-}
+        - GR_PDF_GENERATOR=${GR_PDF_GENERATOR-}
+        - GR_IMG_GENERATOR=${GR_IMG_GENERATOR-}
+    command: /bin/bash -c docker_exec_prod.sh
+    environment:
+      - DATABASE_CONNECTION_STRING=${DATABASE_CONNECTION_STRING-}
+      - ALLOWED_HOSTS=${ALLOWED_HOSTS-}
+      - HOST_ADDRESS=${HOST_ADDRESS-}
+      - HOST_PORT_HTTPS=${HOST_PORT_HTTPS-}
+      - HOST_PORT_HTTP=${HOST_PORT_HTTP-}
+      - APP_DOCKER_PORT=${APP_DOCKER_PORT-}
+      - SECRET_KEY=${SECRET_KEY-}
+      - DEBUG=${DEBUG-}
+      - ADMINS=${ADMINS-[]}
+      - HEALTH_CHECK_WATCHTOWER_F=${HEALTH_CHECK_WATCHTOWER_F}
+      - EMAIL_HOST=${EMAIL_HOST-}
+      - EMAIL_PORT=${EMAIL_PORT-}
+      - EMAIL_PW=${EMAIL_PW-}
+      - EMAIL_DOMAIN=${EMAIL_DOMAIN-}
+      - MAILGUN_API_KEY=${MAILGUN_API_KEY-}
+      - BRANDING=${BRANDING-}
+      - PROXY_AUTHENTICATION_USER_HEADER=${PROXY_AUTHENTICATION_USER_HEADER-}
+      - PROXY_AUTHENTICATION_EMAIL_HEADER=${PROXY_AUTHENTICATION_EMAIL_HEADER-}
+      - GR_PDF_GENERATOR=${GR_PDF_GENERATOR-}
+      - GR_IMG_GENERATOR=${GR_IMG_GENERATOR-}
+      - OKTA=${OKTA-}
+      - OIDC=${OIDC-}
+    volumes:
+      - ${MOUNT_FOLDER}/watchtower-f/logs:/var/log
+      - ${MOUNT_FOLDER}/watchtower-f/data:/data
+    ports:
+      - "${APP_DOCKER_PORT-8000}:8000"
+    depends_on:
+      - postgres
+    healthcheck:
+      test: curl --fail -s $$HEALTH_CHECK_WATCHTOWER_F || exit 1
+      interval: 10s
+      timeout: 5s
+      retries: 15
+    networks:
+      - q_network
+
+  nginx:
+    build:
+      context: ../../images/nginx
+      args:
+        - HOST_ADDRESS=${HOST_ADDRESS-}
+        - NGINX_CERT=${BUILD_FILE_NGINX_CERT}
+        - NGINX_KEY=${BUILD_FILE_NGINX_KEY}
+        - APP_DOCKER_PORT=${APP_DOCKER_PORT-}
+    command: /bin/sh -c /etc/opt/docker-entrypoint.sh
+    environment:
+      - APP_DOCKER_PORT=${APP_DOCKER_PORT-}
+    ports:
+      - "${HOST_PORT_HTTPS-443}:443"
+      - "${HOST_PORT_HTTP-80}:80"
+    depends_on:
+      - app
+    networks:
+      - q_network
+
+  postgres:
+    image: postgres:13.2-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/postgres-data
+    environment:
+      POSTGRES_DB: watchtower_f
+      POSTGRES_PASSWORD: PASSWORD
+      POSTGRES_HOST_AUTH_METHOD: trust
+      PGDATA: /postgres-data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - q_network
+
+volumes:
+   postgres-data:
