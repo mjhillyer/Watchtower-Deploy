@@ -109,14 +109,11 @@ RUN chmod +x /usr/local/bin/docker_exec*.sh
 #    cd -; \
 #fi
 
-#    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
-
 RUN if [ -d "/opt/watchtower-flow/frontend" ]; then \
-    curl -sL https://deb.nodesource.com/setup_20.x | bash - && \
+    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get update && \
     apt-get install nodejs && \
     npm install yarn --global && \
-    npm install @mui/base \
     cd /opt/watchtower-flow/frontend && \
     yarn && \
     npm run-script build && \
