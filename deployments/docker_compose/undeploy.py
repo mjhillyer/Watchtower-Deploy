@@ -12,7 +12,7 @@ class DockerComposeRemoveDeployment(UnDeploy):
 
     def on_complete(self):
         print()
-        Prompt.warning(f"If you're not using an external database and would like to wipe your DB, run: {Colors.CYAN}docker volume rm watchtower-flow_postgres-data")
+        Prompt.warning(f"If you're not using an external database and would like to wipe your DB, run: {Colors.CYAN}docker volume rm postgres-data")
 
     def run(self):
         self.check_if_docker_is_started()

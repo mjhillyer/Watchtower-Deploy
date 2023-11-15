@@ -1,6 +1,6 @@
 version: '3'
 networks:
-  watchtower_flow_network:
+  wf_network:
     driver: bridge
     ipam:
       config:
@@ -55,7 +55,7 @@ services:
       timeout: 5s
       retries: 15
     networks:
-      - watchtower_flow_network
+      - wf_network
 
   nginx:
     build:
@@ -74,7 +74,7 @@ services:
     depends_on:
       - app
     networks:
-      - watchtower_flow_network
+      - wf_network
 
   postgres:
     image: postgres:13.2-alpine
@@ -93,7 +93,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - watchtower_flow_network
+      - wf_network
 
 volumes:
    postgres-data:
