@@ -1,6 +1,6 @@
 version: '3'
 networks:
-  q_network:
+  watchtower_flow_network:
     driver: bridge
     ipam:
       config:
@@ -55,7 +55,7 @@ services:
       timeout: 5s
       retries: 15
     networks:
-      - q_network
+      - watchtower_flow_network
 
   nginx:
     build:
@@ -74,7 +74,7 @@ services:
     depends_on:
       - app
     networks:
-      - q_network
+      - watchtower_flow_network
 
   postgres:
     image: postgres:13.2-alpine
@@ -83,7 +83,7 @@ services:
     volumes:
       - postgres-data:/postgres-data
     environment:
-      POSTGRES_DB: watchtower_f
+      POSTGRES_DB: watchtower_flow
       POSTGRES_PASSWORD: PASSWORD
       POSTGRES_HOST_AUTH_METHOD: trust
       PGDATA: /postgres-data
@@ -93,7 +93,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - q_network
+      - watchtower_flow_network
 
 volumes:
    postgres-data:
