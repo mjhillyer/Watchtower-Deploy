@@ -115,7 +115,7 @@ RUN if [ -d "/opt/watchtower-flow/frontend" ]; then \
     apt-get install nodejs && \
     npm install yarn --global && \
     cd /opt/watchtower-flow/frontend && \
-    yarn && \
+    yarn --ignore-engines && \
     npm run-script build && \
     cd -; \
 fi
