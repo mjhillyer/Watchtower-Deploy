@@ -44,7 +44,7 @@ fi
 if [[ ! -z "${BRANDING-}" ]]; then
     ls /tmp
     name=$(basename "$BRANDING" | cut -d. -f1)
-    unzip "/tmp/$name" -d "/opt/watchtower-f/$name"
+    unzip "/tmp/$name" -d "/opt/watchtower-flow/$name"
 	set_env_setting branding "$name"
 fi
 

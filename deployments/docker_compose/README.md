@@ -11,15 +11,15 @@ Make sure you have the following installed:
 ## Configuration File
 | Key                               | Required | Description                                                                                                           | Default message                                                                                      |
 | --------------------------------- | -------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| HOST_ADDRESS                      | ✔     | Watchtower-F's public address as would be entered in a web browser. |
-| ALLOWED_HOSTS                     | ❌    | Watchtower-F's approved list of host names provided as an array. If not provided, will default to HOST_ADDRESS. |
-| HOST_PORT_HTTPS                   | ✔     | Watchtower-F's public address HTTPS port; defaults to 443 |
-| HOST_PORT_HTTP                    | ❌    | Watchtower-F's public address HTTP port; defaults to 80   |
+| HOST_ADDRESS                      | ✔     | Watchtower:FLow's public address as would be entered in a web browser. |
+| ALLOWED_HOSTS                     | ❌    | Watchtower:FLow's approved list of host names provided as an array. If not provided, will default to HOST_ADDRESS. |
+| HOST_PORT_HTTPS                   | ✔     | Watchtower:FLow's public address HTTPS port; defaults to 443 |
+| HOST_PORT_HTTP                    | ❌    | Watchtower:FLow's public address HTTP port; defaults to 80   |
 | ADMINS                            | ✔    | Administrator accounts. Ex: `[{"username": "username", "email":"first.last@example.com", "password": "REPLACEME"}]`     | Will auto-create an admin, you need to find it in the logs docker-compose logs                       |
-| BRANDING                          | ❌    | Full file path to Watchtower-F branding directory                                                                       | Wacthtower:Flow default branding will be used.                                                              |
+| BRANDING                          | ❌    | Full file path to Watchtower:FLow branding directory                                                                       | Wacthtower:Flow default branding will be used.                                                              |
 | DATABASE_CONNECTION_STRING        | ❌    | Database connection string: `<db_connector>://<name>:<password>@<host>:<port>/<db_name>`                                | Will create a Postgres server in the docker-compose deployment for you.  It will not have snapshots. |
 | MOUNT_FOLDER                      | ❌    | Mount folder to put artifacts, logs, etc.                                                                             | Current directory                                                                                    |
-| GIT_URL                           | ❌    | Watchtower-F Github Repo                                                                                                | Defaults to https://github.com/mjhillyer/WFlow.git                                              |
+| GIT_URL                           | ❌    | Watchtower:FLow Github Repo                                                                                                | Defaults to https://github.com/mjhillyer/WFlow.git                                              |
 | MAILGUN_API_KEY                   | ❌    | Mailgun is used to submit an incoming email from notifications.                                                       | No default provided.                                                                                 |
 | NGINX_CERT                        | ❌    | Full file path to Nginx cert.pem                                                                                      | Defaults to self signed                                                                              |
 | NGINX_KEY                         | ❌    | Full file path to Nginx key.pem                                                                                       | Defaults to self signed                                                                              |
@@ -34,7 +34,7 @@ Make sure you have the following installed:
 | PROXY_AUTHENTICATION_USER_HEADER  | ❌    | Proxy Authentication User header.                                                                                     | No default provided.                                                                                 |
 | PROXY_AUTHENTICATION_EMAIL_HEADER | ❌    | Proxy Authentication Email header.                                                                                    | No default provided.                                                                                 |
 | SECRET_KEY                        | ✔     | Django Secret                                                                                                         |                                                                                   |
-| VERSION                           | ❌    | Watchtower-F version/tag                                                                                                | Defaulting to latest release                                                                         |
+| VERSION                           | ❌    | Watchtower:FLow version/tag                                                                                                | Defaulting to latest release                                                                         |
 
 To build an empty configuration file use `python run.py init` at the root of the project.
 
@@ -42,7 +42,7 @@ To build an empty configuration file use `python run.py init` at the root of the
 
 A local Docker container running PostgreSQL will automatically be added when the `configuration.json` file's `DATABASE_CONNECTION_STRING` is set to `""`.
 
-The local database running in Docker container is persisted between deploys in a Docker Volume called `watchtower-f_postgres-data` to preserve data.
+The local database running in Docker container is persisted between deploys in a Docker Volume called `watchtower-flow_postgres-data` to preserve data.
 
 The Docker container running the default PostgreSQL is Alpine Linux. The PostgreSQL configuration files located in the `/postgres-data` directory (e.g., `/postgres-data/postgresql.conf`).
 
@@ -51,12 +51,12 @@ The Docker container running the default PostgreSQL is Alpine Linux. The Postgre
 Remove existing docker build - then:
 
 ```bash
-docker volume rm watchtower-f_postgres-data`
+docker volume rm watchtower-flow_postgres-data`
 ```
 
 ## Running Database on Host or Seperate Server
 
-You can also connect a Docker-ized Watchtower-F instance to a persistent Postgres database running on:
+You can also connect a Docker-ized Watchtower:Flow instance to a persistent Postgres database running on:
 
 1. the Host machine that is used by a Wacthtower:Flow deployment running the docker containers (e.g., Postgres not in a container)
 2. a second server
@@ -82,11 +82,11 @@ listen_addresses = 'localhost, 10.1.0.10'
 
 ### Step 2 - Configure pg_hba.conf
 
-Modify Host's Postgres configuration file `/etc/postgres/10/main/pg_hba.conf` to permit connection from the Watchtower-F instance running in the docker container by allowing a connection from the IP address the Host perceives for the docker container.
+Modify Host's Postgres configuration file `/etc/postgres/10/main/pg_hba.conf` to permit connection from the Watchtower:FLow instance running in the docker container by allowing a connection from the IP address the Host perceives for the docker container.
 
-Watchtower-F's docker compose network is configured with the IP address `172.32.0.0/24`.
+Watchtower:FLow's docker compose network is configured with the IP address `172.32.0.0/24`.
 
-NOTES: If you deployed Wacthtower:Flow using Docker-Compose, the IP address will be that of the Docker-Compose network bridge. If you deployed Wacthtower:Flow using a single container, the IP address will be that of the container's IP address. If you are connecting to a database on a remote server, the IP address of the Watchtower-F instance is the Host machine's IP address.
+NOTES: If you deployed Wacthtower:Flow using Docker-Compose, the IP address will be that of the Docker-Compose network bridge. If you deployed Wacthtower:Flow using a single container, the IP address will be that of the container's IP address. If you are connecting to a database on a remote server, the IP address of the Watchtower:FLow instance is the Host machine's IP address.
 
 Configure `pg_hba.conf` to permit connections from the perceived IP address of docker network (or container):
 
@@ -113,7 +113,7 @@ Modify Wacthtower:Flow's docker deployment configuration file `configuration_man
 
 Example:
 
-`"DATABASE_CONNECTION_STRING": "postgres://watchtower-f:s&kerjkDKW231@10.1.0.10/watchtower_flow_db",`
+`"DATABASE_CONNECTION_STRING": "postgres://watchtower-flow:s&kerjkDKW231@10.1.0.10/watchtower_flow_db",`
 
 ### Step 5 - Restart Wacthtower:Flow container stack
 
@@ -122,42 +122,42 @@ Restart Wacthtower:Flow stack appropriately.
 
 # BACKUP POSTGRES DATABASE
 
-1. Look up password in file `/home/watchtower-f/local/environment.json`.
+1. Look up password in file `/home/watchtower-flow/local/environment.json`.
 1. Run: `pg_dump postres -U example_user -h localhost > <file_path>/pg_dump_<date>.sql`
 
 ## Remote Database
 
-It is also possible to connect Docker-ized Watchtower-F instance to a PostgreSQL database instance running on a different machine (i.e., remote database) following the below instructions.
+It is also possible to connect Docker-ized Watchtower:Flow instance to a PostgreSQL database instance running on a different machine (i.e., remote database) following the below instructions.
 
 This configuration provides a persistent Postgres database on the Host machine that is used by a Wacthtower:Flow deployment running withing docker containers on the host machine.
 
 ## Viewing Logs
 
-When a `Server Error (500)` appears the will almost always be written to the log file in the `watchtower-f_app_1` container and can be accessed from the following `tail` command on the HOST machine:
+When a `Server Error (500)` appears the will almost always be written to the log file in the `watchtower-flow_app_1` container and can be accessed from the following `tail` command on the HOST machine:
 
 ```bash
-tail <path_to>/watchtower-deployments/volumes/watchtower-f/logs/gunicorn.error.log
+tail <path_to>/watchtower-deployments/volumes/watchtower-flow/logs/gunicorn.error.log
 ```
 
-This file can also be reached from the Watchtower-F container (watchtower-f_app_1):
+This file can also be reached from the Watchtower:Flow container (watchtower-flow_app_1):
 
 ```bash
-docker exec -it watchtower-f_app_1 tail /var/log/gunicorn.error.log
+docker exec -it watchtower-flow_app_1 tail /var/log/gunicorn.error.log
 ```
 
 NOTE: You may need to prefix your docker commands with `sudo` depending on the relative ownership of Docker and ownership and install directory of `watchtower-deployments` on your Host.
 
-The STDOUT of the Watchtower-F as it runs can be viewed by attaching in a terminal to the Watchtower-F container via the command (for example):
+The STDOUT of the Watchtower:Flow as it runs can be viewed by attaching in a terminal to the Watchtower:Flow container via the command (for example):
 
 ```bash
-docker attach watchtower-f_app_1
+docker attach watchtower-flow_app_1
 ```
 
 ## Setting up SSL via Let's Encrypt certbot
 
 The following instructions describe the general process of using Let's Encrypt certbot to configure an SSL certificate for your instance on Ubuntu 18.04. (Adjust appropriately for your OS.)
 
-Watchtower-F's NGINX is preconfigred to allow port 80 access to the path where certbot adds a file for validating the domain.
+Watchtower:Flow's NGINX is preconfigred to allow port 80 access to the path where certbot adds a file for validating the domain.
 
 You may find it useful to read one of the many posts online regarding certbot for additional hints.
 
@@ -166,7 +166,7 @@ You may find it useful to read one of the many posts online regarding certbot fo
 First, connect to NINGX running in the Docker container.
 
 ```bash
-docker exec -it watchtower-f_nginx_1 /bin/sh
+docker exec -it watchtower-flow_nginx_1 /bin/sh
 ```
 
 NOTE: The NGINX container uses the Alpine OS.
@@ -191,7 +191,7 @@ certbot --nginx -d example.com
 
 This runs certbot with the --nginx plugin, using -d to specify the domain names for the certificate. Be sure to use the same domain as specified Wacthtower:Flow's configuration file (e.g., "HOST_ADDRESS": "example.com").
 
-You will be prompted to enter an email address, agree to the terms of service and other information. certbot will communicate with the Let’s Encrypt server, then run a challenge to verify that you control the domain. Watchtower-F's NGINX is preconfigred to allow port 80 access to the path where certbot adds a file for validating the domain. certbot's NGINX plugin will reconfiguring NGINX and reload the config whenever necessary. 
+You will be prompted to enter an email address, agree to the terms of service and other information. certbot will communicate with the Let’s Encrypt server, then run a challenge to verify that you control the domain. Watchtower:Flow's NGINX is preconfigred to allow port 80 access to the path where certbot adds a file for validating the domain. certbot's NGINX plugin will reconfiguring NGINX and reload the config whenever necessary. 
 
 Complete any additional certbot prompts to configure your HTTPS settings.
 
@@ -214,7 +214,7 @@ exit
 Re-run certbot every ninety days to renew the certificate by typing the following:
 
 ```bash
-docker exec -it watchtower-f_nginx_1 /bin/sh
+docker exec -it low_nginx_1 /bin/sh
 certbot --nginx -d example.com
 ```
 

@@ -38,7 +38,7 @@ fi
 
 # Check that the database is ready. The docker exec command
 # writes out a 'ready' file once migrations are finished.
-while [ ! -f /tmp/watchtower-f-is-ready ]; do
+while [ ! -f /tmp/watchtower-flow-is-ready ]; do
 	echo "Waiting for the database to finish initializing..."
 	sleep 3
 done

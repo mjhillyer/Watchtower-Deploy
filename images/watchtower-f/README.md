@@ -1,5 +1,5 @@
-# Watchtower-F on Docker
-Docker image for Watchtower-F, built with Ubuntu 20.04.
+# Watchtower:Flow on Docker
+Docker image for Watchtower:Flow, built with Ubuntu 20.04.
 
 The current version is intended for testing local image builds for demonstration and testing purposes.
 
@@ -10,8 +10,8 @@ Subsequent versions may be intended to be run from Docker Hub.
 Clone this repo and cd into repo directory.
 
 ```shell
-git clone git@github.com:GovReady/govready-docker.git
-cd govready-docker
+git clone git@github.com:mjhillyer/Watchtower-Deploy.git
+cd Watchtower-Deplow
 ```
 
 Remove old image (if any), and build a new one.
@@ -19,23 +19,23 @@ Remove old image (if any), and build a new one.
 Currently the Dockerfile retrieves GovReady's `main` (e.g., `master`) branch.  Subsequent versions will pull a specific release tag instead of `main`.
 
 ```shell
-docker rmi govready-demo ; docker build --tag govready-demo .
+docker rmi watchtower-flow ; docker build --tag watchtower-flow .
 ```
 
-## Run Watchtower-F
+## Run Watchtower:Flow
 
 Run an ephemeral container with port forwarding, in interactive mode
 
-Include the "demo" argument to start Watchtower-F in demo mode.
+Include the "demo" argument to start Watchtower:Flow in demo mode.
 
 ```shell
-docker run --rm -p 8000:8000 govready-demo demo
+docker run --rm -p 8000:8000 watchtower-flow demo
 ```
 
 You should see the following output (with the actual password, instead of RANDOM_PASSWORD_HERE:
 
 ```
-This is Watchtower-F.
+This is Watchtower:Flow.
 v0.9.1.49.1
 
 running some checks...
@@ -49,8 +49,8 @@ setting up system and creating demo user...
 
 Created administrator account (username: admin) with password: RANDOM_PASSWORD_HERE
 
-starting GovReady server...
-Watchtower-F is running.
+starting Watchtower:Flow server...
+Watchtower:Flow is running.
 Visit http://localhost:8000/ with your browser.
 Log in with the administrator credentials above.
 Hit control-C to exit.
@@ -65,7 +65,7 @@ The Docker container will output some simple instructions if the user does not i
 To try this feature:
 
 ```shell
-docker run govready-demo
+docker run watchtower-flow
 ```
 
 Note that this command will create a container with a randomly-generated name; after you stop it, remember to remove the container.

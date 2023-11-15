@@ -9,7 +9,7 @@ networks:
 services:
   app:
     build:
-      context: ../../images/watchtower-f
+      context: ../../images/watchtower-flow
       dockerfile: Dockerfile
       args:
         - VERSION=${VERSION}
@@ -43,8 +43,8 @@ services:
       - OKTA=${OKTA-}
       - OIDC=${OIDC-}
     volumes:
-      - ${MOUNT_FOLDER}/watchtower-f/logs:/var/log
-      - ${MOUNT_FOLDER}/watchtower-f/data:/data
+      - ${MOUNT_FOLDER}/watchtower-flow/logs:/var/log
+      - ${MOUNT_FOLDER}/watchtower-flow/data:/data
     ports:
       - "${APP_DOCKER_PORT-8000}:8000"
     depends_on:

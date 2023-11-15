@@ -7,7 +7,7 @@
 
   {"key": "ADMINS", "required": false, "description":  "Administrator accounts. Ex: [{\"username\": \"username\", \"email\":\"first.last@example.com\", \"password\": \"REPLACEME\"}]", "default-message":  "Will auto-create an admin, you need to find it in the logs docker-compose logs"},
   {"key": "MOUNT_FOLDER", "required": false, "description":  "Mount folder to put artifacts, logs, etc.", "default-message":  "Current directory."},
-  {"key": "GIT_URL", "required": false, "description":  "Watchtower:Flow Github Repo", "default-message":  "Defaults to https://github.com/mjhillyer/WFlow.git"},
+  {"key": "GIT_URL", "required": false, "description":  "Watchtower:Flow Github Repo", "default-message":  "Defaults to https://github.com/mjhillyer/watchtower-flow.git"},
   {"key": "VERSION", "required": false, "description":  "Watchtower:Flow version/tag", "default-message":  "Defaulting to latest release."},
   {"key": "DATABASE_CONNECTION_STRING", "required": false, "description":  "Database connection string: <db_connector>://<username>:<password>@<host>:<port>/<db_name>", "default-message":  "Will create a Postgres server in the docker-compose deployment for you.  It will not have snapshots."},
 

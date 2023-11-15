@@ -7,7 +7,7 @@ from utils.prompts import Prompt, Colors
 class DockerComposeDeployment(Deployment):
     TMP_BUILD_FILES = [
         {"image": 'nginx', "keys": ['NGINX_CERT', 'NGINX_KEY']},
-        {"image": 'watchtower-f', "keys": ['BRANDING']},
+        {"image": 'watchtower-flow', "keys": ['BRANDING']},
     ]
     REQUIRED_PORTS = []
 
@@ -45,9 +45,9 @@ class DockerComposeDeployment(Deployment):
         del self.config['PERSIST_STACK']
 
         self.check_if_docker_is_started()
-        self.set_default('COMPOSE_PROJECT_NAME', 'watchtower-f')  # Prefix for all docker containers
+        self.set_default('COMPOSE_PROJECT_NAME', 'watchtower-flow')  # Prefix for all docker containers
 
-        self.set_default('GIT_URL', "https://github.com/mjhillyer/WFlow.git")
+        self.set_default('GIT_URL', "https://github.com/mjhillyer/watchtower-flow.git")
         self.set_default('ADMINS', [] if not self.config.get('ADMINS') else self.config.get('ADMINS'))
         self.set_default('OKTA', {} if not self.config.get('OKTA') else self.config.get('OKTA'))
         self.set_default('OIDC', {} if not self.config.get('OIDC') else self.config.get('OIDC'))
@@ -63,7 +63,7 @@ class DockerComposeDeployment(Deployment):
 
         self.set_default('HEALTH_CHECK_WATCHTOWER_F', f"http://app:{self.config['APP_DOCKER_PORT']}")
         using_internal_db = self.set_default('DATABASE_CONNECTION_STRING',
-                                             "postgres://postgres:PASSWORD@postgres:5432/watchtower_f")
+                                             "postgres://postgres:PASSWORD@postgres:5432/watchtower_flow")
         self.set_default('DB_ENGINE', self.config['DATABASE_CONNECTION_STRING'].split(':')[0])
         docker_compose_file = "docker-compose.yaml"
         if using_internal_db:

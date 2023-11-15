@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends tzdata && \
   ln -fs /usr/share/zoneinfo/UTC /etc/localtime && \
   dpkg-reconfigure tzdata
 
-# Install Watchtower-F prerequisites.
+# Install Watchtower:Flow prerequisites.
 RUN apt-get update && apt-get -y install \
   unzip git curl jq \
   python3 python3-pip \
@@ -45,10 +45,10 @@ RUN if [ "$VERSION" = "" ]; then \
     else \
         echo $VERSION > /tmp/version.txt; \
   fi
-RUN git clone --depth 1 --branch $(cat /tmp/version.txt) ${GIT_URL} WFlow
+RUN git clone --depth 1 --branch $(cat /tmp/version.txt) ${GIT_URL} watchtower-flow
 RUN find . -type f -print0 | xargs -0 dos2unix
 
-WORKDIR /opt/watchtower-f
+WORKDIR /opt/watchtower-flow
 
 
 # Install Python requirements.
@@ -100,21 +100,21 @@ RUN chmod +x /usr/local/bin/docker_exec*.sh
 # the container is launched with --mount.
 # --mount type=bind,source="$(pwd)",dst=/mnt/q-files-host
 
-#RUN if [ -d "/opt/watchtower-f/frontend" ]; then \
+#RUN if [ -d "/opt/watchtower-flow/frontend" ]; then \
 #    apt-get install -y nodejs npm && \
 #    npm install yarn --global && \
-#    cd /opt/watchtower-f/frontend && \
+#    cd /opt/watchtower-flow/frontend && \
 #    yarn && \
 #    npm run-script build && \
 #    cd -; \
 #fi
 
-RUN if [ -d "/opt/watchtower-f/frontend" ]; then \
+RUN if [ -d "/opt/watchtower-flow/frontend" ]; then \
     curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get update && \
     apt-get install nodejs && \
     npm install yarn --global && \
-    cd /opt/watchtower-f/frontend && \
+    cd /opt/watchtower-flow/frontend && \
     yarn && \
     npm run-script build && \
     cd -; \
