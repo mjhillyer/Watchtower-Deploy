@@ -121,15 +121,11 @@ RUN chmod +x /usr/local/bin/docker_exec*.sh
 #fi
 
 RUN if [ -d "/opt/watchtower-flow/frontend" ]; then \
-    apt-get install -y ca-certificates curl gnupg && \
-    mkdir -p /etc/apt/keyrings && \ 
-    curl -sL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg && \ 
-    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_16.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list && \
+    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
     apt-get update && \
-    apt-get install -y nodejs && \
-    npm install yarn --global && \
-    yarn add @mui/base && \ 
+    apt-get install -y nodejs=14.21.3-deb-1nodesource1 && \
     cd /opt/watchtower-flow/frontend && \
+    npm install yarn --global && \
     yarn --ignore-engines && \
     npm run-script build && \
     cd -; \
