@@ -31,7 +31,8 @@ RUN apt-get update && apt-get -y install \
   python3 python3-pip \
   python3-yaml \
   graphviz pandoc \
-  gunicorn
+  gunicorn \
+  ca-certificates curl gnupg
 
 # Install Watchtower application.
 WORKDIR /opt
@@ -121,12 +122,14 @@ RUN chmod +x /usr/local/bin/docker_exec*.sh
 #fi
 
 RUN if [ -d "/opt/watchtower-flow/frontend" ]; then \
-    curl -sL https://deb.nodesource.com/setup_14.x | bash - && \
+    mkdir -p /etc/apt/keyrings \
+    curl -sL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg \
+    echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | sudo tee /etc/apt/sources.list.d/nodesource.list \
     apt-get update && \
-    apt-get install -y nodejs=14.21.3-deb-1nodesource1 && \
+    apt-get install -y nodejs && \
     cd /opt/watchtower-flow/frontend && \
-    npm install yarn --global && \
-    yarn --ignore-engines && \
+    npm install --global yarn && \
+    yarn && \
     npm run-script build && \
     cd -; \
 fi
