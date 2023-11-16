@@ -1,6 +1,6 @@
 version: '3'
 networks:
-  wf_network:
+  net:
     driver: bridge
     ipam:
       config:
@@ -55,7 +55,7 @@ services:
       timeout: 5s
       retries: 15
     networks:
-      - wf_network
+      - net
 
   nginx:
     build:
@@ -74,7 +74,7 @@ services:
     depends_on:
       - app
     networks:
-      - wf_network
+      - net
 
   postgres:
     image: postgres:13.2-alpine
@@ -93,7 +93,7 @@ services:
       timeout: 5s
       retries: 5
     networks:
-      - wf_network
+      - net
 
 volumes:
    postgres-data:
